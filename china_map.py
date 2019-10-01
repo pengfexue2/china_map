@@ -36,8 +36,13 @@ def combine_pic(folder):
     for i in range(x_index*y_index):
         #提醒进度的语句
         print(f"目前进度{i}/{x_index*y_index}")
-        #对素材图缩放至小格大小
-        test = Image.open(f"{folder}/" + pic_list[i%total]).resize((unit_size,unit_size), Image.ANTIALIAS)
+        try:
+            # 对素材图缩放至小格大小
+            test = Image.open(f"{folder}/" + pic_list[i%total]).resize((unit_size,unit_size), Image.ANTIALIAS)
+        except IOError:
+            print("有1位朋友的头像读取失败，跳过该头像")  # 有些人没设置头像，就会有异常
+            continue
+
         #将缩放成小格的素材图按顺序贴到白色底图上
         new_img.paste(test,(x*unit_size,y*unit_size))
         x+=1
