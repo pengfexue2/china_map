@@ -16,7 +16,7 @@ def combine_pic(folder):
     #新建与主图一样大的白色底图
     new_img = Image.new('RGB',(w,h),'#FFFFFF')
 
-    unit_size = 20
+    unit_size = 60
 
     #根据小格尺寸，计算大图可容纳小图数量
     y_index = h//unit_size
@@ -55,7 +55,7 @@ def combine_pic(folder):
     new_img.save("out.jpg",quality=100)
 
 #如果不想每次都生成图，可以运行一次后注释掉这句，参数为文件夹名字
-combine_pic("TED")
+combine_pic("qianxi")
 
 #读取合成后的素材图
 src1 = Image.open("out.jpg")
