@@ -16,7 +16,7 @@ def combine_pic(folder):
     #新建与主图一样大的白色底图
     new_img = Image.new('RGB',(w,h),'#FFFFFF')
 
-    unit_size = 60
+    unit_size = 20
 
     #根据小格尺寸，计算大图可容纳小图数量
     y_index = h//unit_size
@@ -36,8 +36,13 @@ def combine_pic(folder):
     for i in range(x_index*y_index):
         #提醒进度的语句
         print(f"目前进度{i}/{x_index*y_index}")
-        #对素材图缩放至小格大小
-        test = Image.open(f"{folder}/" + pic_list[i%total]).resize((unit_size,unit_size), Image.ANTIALIAS)
+        try:
+            # 对素材图缩放至小格大小
+            test = Image.open(f"{folder}/" + pic_list[i%total]).resize((unit_size,unit_size), Image.ANTIALIAS)
+        except IOError:
+            print("有1位朋友的头像读取失败，跳过该头像")  # 有些人没设置头像，就会有异常
+            continue
+
         #将缩放成小格的素材图按顺序贴到白色底图上
         new_img.paste(test,(x*unit_size,y*unit_size))
         x+=1
@@ -50,7 +55,7 @@ def combine_pic(folder):
     new_img.save("out.jpg",quality=100)
 
 #如果不想每次都生成图，可以运行一次后注释掉这句，参数为文件夹名字
-combine_pic("qianxi")
+combine_pic("TED")
 
 #读取合成后的素材图
 src1 = Image.open("out.jpg")
